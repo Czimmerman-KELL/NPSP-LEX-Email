@@ -1,0 +1,68 @@
+<aura:component implements="clients:availableForMailAppAppPage,clients:hasItemContext,flexipage:availableForAllPageTypes"
+                access="global"
+                controller="LFGController">
+    
+    
+    <aura:handler name="change" value="{!v.subject}" action="{!c.handlePeopleChange}" />
+    <aura:handler name="change" value="{!v.people}" action="{!c.handlePeopleChange}" />
+    <aura:handler name="init" value="{!this}" action="{!c.handlePeopleChange}" />
+    
+    <div id="content">
+        <lightning:card title="Associate Email With Affiliated Accounts">
+            
+			<!--Need to add toggle for Bulk v/s single association-->
+            <!--label class="slds-box slds-p-around_medium slds-checkbox_toggle slds-grid">
+                <span class="slds-form-element__label slds-m-bottom_none">Bulk Associate</span>
+                <input type="checkbox" name="checkbox-toggle-2" value="checkbox-toggle-2" aria-describedby="checkbox-toggle-2" />
+                <span id="checkbox-toggle-2" class="slds-checkbox_faux_container" aria-live="assertive">
+                    <span class="slds-checkbox_faux"></span>
+                    <span class="slds-checkbox_on">Enabled</span>
+                    <span class="slds-checkbox_off">Disabled</span>
+                </span>
+            </label-->
+            
+            <aura:iteration items="{!v.affiliations}" var="aff">
+                <lightning:tile label="{!(aff.npe5__Primary__c?aff.npe5__Organization__r.Name + ' (Primary)':aff.npe5__Organization__r.Name)}" class="slds-p-horizontal_large slds-p-vertical_small">
+                    <aura:set attribute="media">
+                        <lightning:icon iconName="standard:groups"/>
+                    </aura:set>
+                    <dl class="slds-dl_horizontal">
+                        <dt class="slds-dl_horizontal__label">
+                            <p class="slds-truncate" title="Company">Contact : {!aff.npe5__Contact__r.Name}</p>
+                        </dt>
+                        <dt class="slds-dl_horizontal__label">
+                            <p class="slds-truncate" title="Company">Account Record Type : {!aff.npe5__Organization__r.RecordType.Name}</p>
+                        </dt>
+                        <dt class="slds-dl_horizontal__label">
+                            <p class="slds-truncate" title="Role">Role : {!aff.npe5__Role__c}</p>
+                        </dt>
+                        <dt class="slds-dl_horizontal__label">
+                            <p class="slds-truncate" title="Company">Status: {!aff.npe5__Status__c}</p>
+                        </dt>
+                        <aura:if isTrue="{!not(v.bulk)}">
+                            <lightning:button label="Attach to Account" 
+                                              onclick="{! c.associateEmail }"
+                                              name="{!aff.npe5__Organization__c}"/>
+                        </aura:if>
+                        <aura:if isTrue="{!v.bulk}">
+                            <lightning:input type="toggle" aura:id="selectedAccounts" label="Select"
+                                              name="{!aff.npe5__Organization__c}" 
+                                             value="{!aff.npe5__Organization__c}"
+                                             messageToggleActive="Associate"
+                                             messageToggleInactive ="Do Not Associate"/>
+                        </aura:if>
+                    </dl>
+                </lightning:tile>
+            </aura:iteration>
+            <aura:if isTrue="{!v.bulk}">
+                <lightning:button label="Attach to Accounts" class="slds-m-around_large"
+                                  variant="brand"
+                                  onclick="{! c.associateEmail }" />
+            </aura:if>
+        </lightning:card>
+    </div>
+    <aura:attribute name="affiliations" type="List[]" />
+    <aura:attribute name="result" type="String" default=""/>
+    <aura:attribute name="bulk" type="Boolean" default="true"/>
+    <aura:attribute name="outputText" type="String" />
+</aura:component>

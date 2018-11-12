@@ -1,0 +1,9 @@
+project:
+    name: LFGController
+    package:
+        name:  LFGController
+        api_version: '43.0'
+    dependencies:
+        - github: 'https://github.com/SalesforceFoundation/Cumulus'
+
+
