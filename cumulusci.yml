@@ -1,7 +1,7 @@
 project:
-    name: LFGController
+    name: NPSP-LEX-Email
     package:
-        name:  LFGController
+        name:  NPSP-LEX-Email
         api_version: '43.0'
     dependencies:
         - github: 'https://github.com/SalesforceFoundation/Cumulus'
